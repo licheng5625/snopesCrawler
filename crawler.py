@@ -22,11 +22,10 @@ class SnoperCrawler:
         #fff=soup.find_all("a","img-wrapper")
         postlist =soup.find(attrs={"class": "post-list"})
         items=postlist.find_all("li")
-        i=0
         for item in items:
             onepost=item.find("span","label")
             if onepost is not None:
-                i=i+1
+                i=len(self.__mydictdata)
                 print ('NO:'+ str(i))
                 link=item.find(attrs={"class": "title"}).find('a') .get('href')
                 link ="http://www.snopes.com"+link
@@ -59,7 +58,7 @@ class SnoperCrawler:
         for clam in clams:
             if clam.text == 'Claim:':
                 clamtext=clam.parent.text.replace('Claim: ','')
-                print (clamtext)
+                print (clamtext.encode('utf-8'))
                 mydict["Claim"]=clamtext
 
             if clam.text =='Originally published:':
@@ -91,6 +90,6 @@ class SnoperCrawler:
         format_type = u'%Y_%m_%d_%H_%M_%S'
         return time.strftime(format_type, time.localtime(time.time()))
 s=SnoperCrawler();
-for i in range(1,30):
+for i in range(7,30):
     s.CrawOnePage(i);
     s.  WriteJSON()
